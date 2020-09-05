@@ -7,7 +7,7 @@ export function createReducer(initialState, handlerMap) {
       if (action[NOT_IMMUTABLE]) {
         return handler(state, action);
       } else {
-        return produce(state, draft => {
+        return produce(state, (draft) => {
           const handler = handlerMap[action.type];
           handler(draft, action);
         });
@@ -25,6 +25,7 @@ export function setValueReducer(state, action) {
   state[action.key] = action.value;
 }
 
+// 이름 충돌 문제를 해겨하고자 Symbol로 관리
 export const FETCH_PAGE = Symbol('FETCH_PAGE');
 export const FETCH_KEY = Symbol('FETCH_KEY');
 export const NOT_IMMUTABLE = Symbol('NOT_IMMUTABLE');

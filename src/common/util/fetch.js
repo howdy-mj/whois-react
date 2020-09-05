@@ -7,13 +7,14 @@ import { FETCH_PAGE, FETCH_KEY } from '../redux-helper';
 
 function makeCheckSlowSaga(actionType, fetchKey) {
   return function* () {
+    // 0.5초가 지나면
     yield delay(500);
     yield put(
       actions.setIsSlow({
         actionType,
         fetchKey,
         isSlow: true,
-      }),
+      })
     );
   };
 }
@@ -30,14 +31,14 @@ function getIsCallEffect(value) {
 export function makeFetchSaga({
   fetchSaga,
   canCache,
-  getTotalCount = res => res?.totalCount,
+  getTotalCount = (res) => res?.totalCount, // 패아지네이션
 }) {
   return function* (action) {
     const { type: actionType } = action;
     const fetchPage = action[FETCH_PAGE];
     const fetchKey = getFetchKey(action);
     const nextPage = yield select(
-      state => state.common.fetchInfo.nextPageMap[actionType]?.[fetchKey] || 0,
+      (state) => state.common.fetchInfo.nextPageMap[actionType]?.[fetchKey] || 0
     );
     const page = fetchPage !== undefined ? fetchPage : nextPage;
     const iterStack = [];
@@ -53,12 +54,13 @@ export function makeFetchSaga({
         continue;
       }
       if (getIsCallEffect(value) && value.payload.fn === callApi) {
+        // api 처리
         yield put(
           actions.setFetchStatus({
             actionType,
             fetchKey,
             status: FetchStatus.Request,
-          }),
+          })
         );
         const apiParam = value.payload.args[0];
         const cacheKey = getApiCacheKey(actionType, apiParam);
@@ -152,7 +154,7 @@ function getIsGeneratorFunction(obj) {
 export function deleteApiCache(actionType) {
   let keys = apiCache.keys();
   if (actionType) {
-    keys = keys.filter(key => key.includes(actionType));
+    keys = keys.filter((key) => key.includes(actionType));
   }
   for (const key of keys) {
     apiCache.del(key);

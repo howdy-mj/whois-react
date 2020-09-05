@@ -1,6 +1,7 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
 import { actions, Types } from './index';
 import { callApi } from '../../common/util/api';
+import { makeFetchSaga } from '../../common/util/fetch';
 
 function* fetchAutoComplete({ keyword }) {
   const { isSuccess, data } = yield call(callApi, {
@@ -16,5 +17,10 @@ function* fetchAutoComplete({ keyword }) {
 
 export default function* () {
   // 앞의 액션이 발생하면, 뒤의 함수 실행
-  yield all([takeEvery(Types.FetchAutoComplete, fetchAutoComplete)]);
+  yield all([
+    takeEvery(
+      Types.FetchAutoComplete,
+      makeFetchSaga({ fetchSaga: fetchAutoComplete, canCache: true })
+    ),
+  ]);
 }
