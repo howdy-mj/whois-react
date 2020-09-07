@@ -36,6 +36,11 @@ export default function User({ match }) {
     dispatch(actions.fetchUserHistory(name));
   }, [dispatch, name]);
 
+  useEffect(() => {
+    // user 페이지를 벗어날때 모든 상태값 초기화
+    return () => dispatch(actions.initialize());
+  }, [dispatch]);
+
   const { isFetched, isSlow } = useFetchInfo(Types.FetchUser);
 
   return (
@@ -43,7 +48,7 @@ export default function User({ match }) {
       <Row justify="center">
         <Col xs={24} md={20} lg={14}>
           <PageHeader
-            onBack={history.goBack}
+            onBack={() => history.push('/')}
             title={
               <Space>
                 사용자 정보

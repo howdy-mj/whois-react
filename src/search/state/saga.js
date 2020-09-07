@@ -15,9 +15,10 @@ function* fetchAutoComplete({ keyword }) {
   }
 }
 
-function* fetchAllHistory({ name }) {
+function* fetchAllHistory({ _, page }) {
   const { isSuccess, data } = yield call(callApi, {
     url: '/history',
+    params: { page },
   });
 
   if (isSuccess && data) {

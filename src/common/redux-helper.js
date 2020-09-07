@@ -5,6 +5,7 @@ export function createReducer(initialState, handlerMap) {
     const handler = handlerMap[action.type];
     if (handler) {
       if (action[NOT_IMMUTABLE]) {
+        // 초기화
         return handler(state, action);
       } else {
         return produce(state, (draft) => {

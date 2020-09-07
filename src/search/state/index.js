@@ -2,6 +2,7 @@ import {
   createReducer,
   createSetValueAction,
   setValueReducer,
+  FETCH_PAGE,
 } from '../../common/redux-helper';
 
 // enum
@@ -17,7 +18,7 @@ export const actions = {
     type: Types.FetchAutoComplete,
     keyword,
   }),
-  fetchAllHistory: () => ({ type: Types.FetchAllHistory }),
+  fetchAllHistory: () => ({ type: Types.FetchAllHistory, [FETCH_PAGE]: 0 }),
 };
 
 const INITIAL_STATE = {
