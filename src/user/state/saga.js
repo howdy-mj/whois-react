@@ -30,9 +30,21 @@ function* fetchUpdateUser({ user, key, value }) {
   if (isSuccess && data) {
     // autoComplete에서 canCache: true 설정 때문에, 메인에서 부서가 안바뀜, 이를 없애주는 작업 필요
     deleteApiCache();
+    yield put(actions.addHistory(data.history));
   } else {
     // 이전값을 주면서 롤백
     yield put(actions.setValue('user', user));
+  }
+}
+
+function* fetchUserHistory({ name }) {
+  const { isSuccess, data } = yield call(callApi, {
+    url: '/history',
+    params: { name },
+  });
+
+  if (isSuccess && data) {
+    yield put(actions.setValue('userHistory', data));
   }
 }
 
@@ -46,6 +58,10 @@ export default function* () {
     takeLeading(
       Types.FetchUpdateUser,
       makeFetchSaga({ fetchSaga: fetchUpdateUser, canCache: false })
+    ),
+    takeLeading(
+      Types.FetchUserHistory,
+      makeFetchSaga({ fetchSaga: fetchUserHistory, canCache: false })
     ),
   ]);
 }
