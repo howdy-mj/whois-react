@@ -3,10 +3,20 @@ import { Form, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import AuthLayout from '../component/AuthLayout';
+import { useDispatch } from 'react-redux';
+import { actions } from '../state';
+import useBlockLoginUser from '../hook/useBlockLoginUser';
 
 export default function Login() {
+  useBlockLoginUser();
+  const dispatch = useDispatch();
+
+  function onFinish({ username, password }) {
+    dispatch(actions.fetchLogin(username, password));
+  }
+
   return (
-    <AuthLayout onFinish={() => {}}>
+    <AuthLayout onFinish={onFinish}>
       <Form.Item
         name="username"
         rules={[{ required: true, message: 'Please input your Username!' }]}

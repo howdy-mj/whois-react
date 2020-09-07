@@ -7,6 +7,7 @@ export const FetchStatus = {
   Success: 'Success',
   Fail: 'Fail',
 };
+
 export const AuthStatus = {
   Login: 'Login',
   NotLogin: 'NotLogin',

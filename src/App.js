@@ -5,6 +5,8 @@ import Search from './search/container/Search';
 import User from './user/container/User';
 import Login from './auth/container/Login';
 import Signup from './auth/container/Signup';
+import { useDispatch } from 'react-redux';
+import { actions as authActions } from './auth/state';
 
 export default function App() {
   useEffect(() => {
@@ -13,6 +15,11 @@ export default function App() {
     const loadingEl = document.getElementById('init-loading');
     bodyEl.removeChild(loadingEl);
   }, []);
+  // 가입한 유저 정보 유지
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(authActions.fetchUser());
+  }, [dispatch]);
   return (
     <>
       <Route exact path="/" component={Search} />
